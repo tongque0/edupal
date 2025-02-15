@@ -1,9 +1,9 @@
 version: '3'
 services:
   edupal:
-    image: your-backend-image:latest  # 替换为你的后端镜像
-    expose:
-      - "8080"  # 仅暴露给 Docker 网络，不映射到主机
+    image: ghcr.io/tongque0/edupal/edupal:latest  # 替换为你的后端镜像
+    ports:
+      - "8080:8080"  # 映射到主机
     environment:
       - GO_ENV=test
     depends_on:
@@ -12,8 +12,8 @@ services:
 
   mysql:
     image: mysql:latest
-    expose:
-      - "3306"  # 仅暴露给 Docker 网络，不映射到主机
+    ports:
+      - "3306:3306"
     environment:
       - MYSQL_DATABASE=gorm
       - MYSQL_USER=gorm
@@ -23,66 +23,14 @@ services:
       - mysql_data:/var/lib/mysql
 
   frontend:
-    image: your-frontend-image:latest  # 替换为你的前端镜像
-    expose:
-      - "3000"  # 仅暴露给 Docker 网络，不映射到主机
-    environment:
-      - NODE_ENV=production
-    depends_on:
-      - edupal
-    restart: always
-
-  nginx:
-    image: nginx:latest
+    image: ghcr.io/tongque0/edupal/edupal-frontend:latest  # 替换为你的前端镜像
     ports:
-      - "80:80"  # 映射到主机端口，供外部访问
+      - "5173:80"
     environment:
-      - FRONTEND_HOST=frontend:5173  # 前端服务地址
-      - BACKEND_HOST=edupal:8080     # 后端服务地址
-    volumes:
-      - type: bind
-        source: ./nginx.conf
-        target: /etc/nginx/nginx.conf  # 使用自定义的 nginx 配置
+      - VUE_APP_BASE_API=/api
     depends_on:
-      - frontend
       - edupal
     restart: always
-
-  nginx-config-generator:
-    image: alpine:latest
-    volumes:
-      - type: bind
-        source: ./nginx.conf
-        target: /nginx.conf
-    command: >
-      sh -c "echo '
-      events {
-        worker_connections 1024;
-      }
-
-      http {
-        server {
-          listen 80;
-
-          location / {
-            proxy_pass http://${FRONTEND_HOST};
-            proxy_set_header Host $$host;
-            proxy_set_header X-Real-IP $$remote_addr;
-            proxy_set_header X-Forwarded-For $$proxy_add_x_forwarded_for;
-            proxy_set_header X-Forwarded-Proto $$scheme;
-          }
-
-          location /api/ {
-            proxy_pass http://${BACKEND_HOST};
-            proxy_set_header Host $$host;
-            proxy_set_header X-Real-IP $$remote_addr;
-            proxy_set_header X-Forwarded-For $$proxy_add_x_forwarded_for;
-            proxy_set_header X-Forwarded-Proto $$scheme;
-          }
-        }
-      }
-      ' > /nginx.conf"
-    restart: on-failure
 
 volumes:
   mysql_data:
