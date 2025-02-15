@@ -1,0 +1,75 @@
+syntax="proto3";
+
+package question;
+
+option go_package="/question";
+
+import "api.proto";
+
+service QuesService {
+    rpc GenQuestions(GenQuestionReq) returns (GenQuestionResp) {
+        option (api.post) = "/question/gen";
+    }
+    rpc GetQuestions(GetQuestionReq) returns (GetQuestionResp) {
+        option (api.get) = "/question/get";
+    }
+    rpc CheckAnswer(CheckAnswerReq) returns (CheckResp) {
+        option (api.post) = "/question/check";
+    }
+}
+
+message GenQuestionReq {
+    string subject = 1;
+    string class = 2;
+    string difficulty = 3;
+    int32 choice_num = 4; // 选择题数量
+    int32 calc_num = 5; // 计算题数量
+    int32 short_ans_num = 6; // 简答题数量
+    string knowledge = 7; // 知识点
+}
+
+message GenQuestionResp {
+    string genid = 1;  // 生成id，可以根据该id查询生成题目列表
+}
+
+message Question {
+    string id = 1;
+    string type = 2;  // 题目类型
+    string title = 3; // 题目标题
+    string question = 4; // 题目内容
+    string answer = 5; // 答案
+    string tip = 6; // 提示
+    string parse = 7; // 解析
+    string subject = 8; // 科目
+    string class = 9; // 年级
+    string difficulty = 10; // 难度
+    string owner_id = 11; // 拥有者的用户ID
+    string owner_name = 12; // 拥有者的用户名
+    string ques_id = 13; // 题目ID
+    string ques_bank_id = 14; // 题库ID
+}
+
+message GetQuestionReq {
+    string ownerid = 1; // 生成题目的id
+    string quesbankid = 2; // 题库id
+    string quesid = 3; // 题目id
+    string subject = 4; // 科目
+    string type = 5; // 题目类型
+    string genid = 6; // 生成题目的id
+}
+
+message GetQuestionResp {
+    repeated Question questions = 1;
+    bool has_more = 2; // 是否还有更多题目
+}
+
+message CheckAnswerReq {
+    string quesid = 1; // 题目id
+    string answer = 2; // 答案
+}
+
+message CheckResp {
+   string result = 1; // 答案是否正确
+   string result_msg = 2; // 答案结果信息
+}
+
