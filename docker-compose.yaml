@@ -1,6 +1,7 @@
 version: '3'
 services:
   edupal:
+    container_name: edupal
     image: ghcr.io/tongque0/edupal/edupal:latest  # 替换为你的后端镜像
     ports:
       - "8080:8080"  # 映射到主机
@@ -11,6 +12,7 @@ services:
     restart: always
 
   mysql:
+    container_name: mysql
     image: mysql:latest
     ports:
       - "3306:3306"

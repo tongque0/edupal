@@ -1,6 +1,9 @@
 import axios from 'axios';
 
-const baseURL = import.meta.env.VITE_APP_API_BASE_URL || "http://127.0.0.1:8080";
+//online
+const baseURL = "https://edupal.ocybers.com/api";
+//local
+// const baseURL = "http://localhost:8000";
 // 创建一个 axios 实例
 const service = axios.create({
   baseURL: baseURL, // 后端 API 的基础 URL

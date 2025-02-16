@@ -10,12 +10,10 @@ gen:
 build:
 	@docker build -f ./deploy/dockerfile.backend -t ghcr.io/tongque0/edupal/edupal:latest .
 	@docker push ghcr.io/tongque0/edupal/edupal:latest
-
-.PHONY: build-frontend
-build-frontend:
 	@cd frontend && pnpm run build
 	@docker build -f ./deploy/dockerfile.frontend -t ghcr.io/tongque0/edupal/edupal-frontend:latest ./frontend
 	@docker push ghcr.io/tongque0/edupal/edupal-frontend:latest
+
 
 
 
