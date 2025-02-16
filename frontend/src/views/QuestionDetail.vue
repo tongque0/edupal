@@ -1,6 +1,12 @@
 <template>
     <Layout>
         <div class="container">
+            <div class="header">
+                <t-button theme="default" variant="text" @click="goBack">
+                    <template #icon><t-icon name="arrow-left" /></template>
+                    返回
+                </t-button>
+            </div>
             <t-space direction="vertical" size="large">
                 <!-- 问题卡片 -->
                 <t-card>
@@ -68,11 +74,13 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import Layout from '@/layout/layout.vue'
-import { useRoute } from 'vue-router'
+import { useRoute,useRouter } from 'vue-router'
 import { MessagePlugin } from 'tdesign-vue-next';
 import { getQuestions } from '@/api/question'
 import { checkAnswer } from '../api/question';
 const route = useRoute()
+const router = useRouter()  // 添加这行
+
 // 响应式状态
 const answer = ref('')
 const showHint = ref(false)
@@ -137,9 +145,25 @@ const handleAiAnalysis = () => {
 const formatContent = (content) => {
     return content.replace(/\\n/g, '<br>');
 }
+
+
+const goBack = () => {
+    router.back()
+}
 </script>
 
 <style scoped>
+.header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 24px;
+    gap: 16px;
+}
+.page-title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 500;
+}
 .container {
     max-width: 800px;
     margin: 0 auto;
@@ -175,5 +199,12 @@ const formatContent = (content) => {
 
 .whitespace-pre-line {
     white-space: pre-line;
+}
+@media (max-width: 768px) {
+    .header {
+        margin-bottom: 16px;
+    }
+
+    /* ...existing mobile styles... */
 }
 </style>

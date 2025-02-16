@@ -3,7 +3,7 @@
         <!-- 使用v-show或v-if根据isMobile的值显示或隐藏导航 -->
         <t-head-menu v-model="menu1Value" theme="light" @change="changeHandler" >
             <template #logo>
-                <!-- <img height="30" src="" alt="logo" /> -->
+                <img height="44" src="@/assets/images/logo.jpg" alt="logo" />
                 <span style="font-weight: 550;font-size: 32px;margin-left: 10px;">EduPal</span>
             </template>
             <t-menu-item value="item1">首页</t-menu-item>

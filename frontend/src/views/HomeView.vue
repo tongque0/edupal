@@ -2,7 +2,7 @@
     <Layout>
         <div class="home">
             <section class="hero-section">
-                <h1 class="title">AI驱动的智能学习平台</h1>
+                <h1 class="title">鞍山市高新区实验学校 - AI驱动的智能学习平台</h1>
                 <div class="feature-list">
                     <p class="feature-item">
                         <t-icon name="root-list" class="feature-icon" />
@@ -14,21 +14,20 @@
                     </p>
                 </div>
             </section>
-
-
+            
             <section class="quick-start-section">
                 <h2 class="section-title">快速开始</h2>
                 <div class="form-grid">
-                    <t-select v-model="subject" placeholder="选择科目">
-                        <t-option v-for="item in subjects" :key="item" :value="item" :label="item" />
+                    <t-select v-model="subject" creatable filterable :options="optionsMap.subject"
+                        @create="(val) => createOptions(val, 'subject')" placeholder="选择科目">
                     </t-select>
 
-                    <t-select v-model="grade" placeholder="选择年级">
-                        <t-option v-for="item in grades" :key="item" :value="item" :label="item" />
+                    <t-select v-model="grade" creatable filterable :options="optionsMap.grade"
+                        @create="(val) => createOptions(val, 'grade')" placeholder="选择年级">
                     </t-select>
 
-                    <t-select v-model="difficulty" placeholder="选择难度">
-                        <t-option v-for="item in difficulties" :key="item" :value="item" :label="item" />
+                    <t-select v-model="difficulty" creatable filterable :options="optionsMap.difficulty"
+                        @create="(val) => createOptions(val, 'difficulty')" placeholder="选择难度">
                     </t-select>
                 </div>
 
@@ -38,13 +37,7 @@
                         <div v-for="type in questionTypes" :key="type" class="type-card">
                             <t-checkbox v-model="selectedTypes[type]">{{ type }}</t-checkbox>
                             <div v-if="selectedTypes[type]" class="counter">
-                                <t-button variant="text" @click="decreaseCount(type)">
-                                    <t-icon name="remove" />
-                                </t-button>
-                                <span>{{ typeCounts[type] || 1 }}</span>
-                                <t-button variant="text" @click="increaseCount(type)">
-                                    <t-icon name="add" />
-                                </t-button>
+                                <t-input-number v-model="typeCounts[type]" :min="1" />
                             </div>
                         </div>
                     </div>
@@ -52,7 +45,7 @@
 
                 <div class="action-row">
                     <t-input v-model="topic" placeholder="输入你想练习的知识点" />
-                    <t-button  theme="primary" @click="handleStart">
+                    <t-button theme="primary" @click="handleStart">
                         开始练习
                         <template #suffix><t-icon name="chevron-right" /></template>
                     </t-button>
@@ -72,7 +65,20 @@ const router = useRouter()
 const subjects = ['数学', '物理', '化学', '生物', '语文', '英语']
 const grades = ['初一', '初二', '初三', '高一', '高二', '高三']
 const difficulties = ['简单', '中等', '困难']
-const questionTypes = ['选择题', '计算题', '简答题']
+const questionTypes = ['选择题','计算题', '简答题']
+
+const optionsMap = ref({
+    subject: subjects.map(item => ({ label: item, value: item })),
+    grade: grades.map(item => ({ label: item, value: item })),
+    difficulty: difficulties.map(item => ({ label: item, value: item })),
+})
+
+const createOptions = (val, type) => {
+    optionsMap.value[type].push({
+        label: val,
+        value: val
+    })
+}
 
 const subject = ref('')
 const grade = ref('')
@@ -85,15 +91,6 @@ const typeCounts = ref({
     '简答题': 1,
 })
 
-const decreaseCount = (type) => {
-    if (!typeCounts.value[type]) typeCounts.value[type] = 1
-    if (typeCounts.value[type] > 1) typeCounts.value[type]--
-}
-
-const increaseCount = (type) => {
-    if (!typeCounts.value[type]) typeCounts.value[type] = 1
-    typeCounts.value[type]++
-}
 
 const handleStart = async () => {
     if (!topic.value) {

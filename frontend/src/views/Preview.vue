@@ -1,6 +1,13 @@
 <template>
     <Layout>
         <div class="container">
+            <div class="header">
+                <t-button theme="default" variant="text" @click="goBack">
+                    <template #icon><t-icon name="arrow-left" /></template>
+                    返回
+                </t-button>
+                <h3 class="page-title">预览题目</h3>
+            </div>
             <t-loading :loading="loading">
                 <template v-if="questions.length > 0">
                     <t-space direction="vertical" size="large">
@@ -81,7 +88,9 @@ const fetchQuestions = async () => {
 const goToQuestion = (id) => {
     router.push(`/question/${id}`)
 }
-
+const goBack = () => {
+    router.back()
+}
 onMounted(() => {
     // 立即执行一次
     fetchQuestions()
@@ -110,6 +119,19 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+.header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 24px;
+    gap: 16px;
+}
+
+.page-title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 500;
+}
+
 .container {
     max-width: 800px;
     margin: 0 auto;
@@ -152,6 +174,9 @@ onUnmounted(() => {
 
 /* 响应式调整 */
 @media (max-width: 768px) {
+    .header {
+        margin-bottom: 16px;
+    }
     .container {
         padding: 16px;
     }
