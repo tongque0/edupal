@@ -1,5 +1,14 @@
 import axios from 'axios';
 
+//写一个函数 能够读取docker提供的环境变量
+function getEnv1(key) {
+  return process.env[key];
+}
+function getEnv2(key) {
+  return import.meta.env[key];
+}
+console.log("process",getEnv1('VITE_APP_BASE_API'));
+console.log("vite",getEnv2('VITE_APP_BASE_API'));
 //online
 const baseURL = "https://edupal.ocybers.com/api";
 //local
