@@ -8,29 +8,31 @@ import "api.proto";
 
 service UserService {
     rpc Register(RegisterReq) returns (RegisterResp) {
-        option (api.post) = "/user/login";
+        option (api.post) = "/user/register";
     }
     rpc Login(LoginReq) returns (LoginResp) {
-        option (api.post) = "/user/register";
+        option (api.post) = "/user/login";
     }
 }
 
 message RegisterReq {
-    string email = 1;
-    string password = 2;
-    string confirm_password = 3;
+    string username = 1;
+    string email = 2;
+    string password = 3;
+    string confirm_password = 4;
 }
 
 message RegisterResp {
-    int32 user_id = 1;
+    string user_id = 1;
 }
 
 message LoginReq {
-    string email= 1;
-    string password = 2;
+    string username = 1;
+    string email = 2;
+    string password = 3;
 }
 
 message LoginResp {
-    int32  user_id = 1;
+    string  user_id = 1;
     string token = 2;
 }

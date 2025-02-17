@@ -6,7 +6,7 @@ services:
     ports:
       - "8080:8080"  # 映射到主机
     environment:
-      - GO_ENV=test
+      - GO_ENV=online
     depends_on:
       - mysql
     restart: always

@@ -33,4 +33,6 @@ _testmain.go
 /.vscode
 /output
 *.local.yml
+/conf/online
 /conf/test
+
