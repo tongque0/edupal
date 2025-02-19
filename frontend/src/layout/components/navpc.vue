@@ -103,6 +103,7 @@ const goToUserProfile = () => {
     margin-right: 20px;
 }
 .nav-top {
+    max-width: 100vw;
     position: fixed;
     top: 0;
     left: 0;
