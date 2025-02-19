@@ -46,6 +46,10 @@ const menuOptions = [
         content: '题库',
         value: '/quesbank'
     },
+    {   // 新增 AI 刷题入口
+        content: 'AI刷题',
+        value: '/practice' 
+    },
 ];
 
 
@@ -60,7 +64,8 @@ const isRootOrSecondLevelRoute = computed(() => {
 
 // 判断当前路由
 const currentRoute = computed(() => {
-    return route.path;
+    // 更精确的路由匹配逻辑
+    return route.matched[0]?.path || '/';
 });
 
 // 屏幕宽度检测
@@ -84,12 +89,21 @@ const handleMenuClick = (data) => {
     router.push(data.value);
 };
 
+// 使用与 PC 端相同的头像地址
+const avatarUrl = ref('https://p26-passport.byteacctimg.com/img/user-avatar/424e10bd281f7bd137cd259593f07f26~140x140.awebp');
+
+// 统一跳转逻辑
 const goToUserProfile = () => {
-    router.push('/');
+    router.push('/user'); // 与 PC 端保持一致
 };
 
 const goBack = () => {
     router.back();
+};
+
+// 添加激活状态判断
+const isActive = (path) => {
+    return route.path === path || route.matched.some(m => m.path === path);
 };
 </script>
 
@@ -131,9 +145,9 @@ const goBack = () => {
 }
 
 :deep(.t-button) {
-    height: 32px;
-    padding: 0 12px;
-    font-size: 14px;
+    min-width: 44px; /* 最小点击区域 */
+    padding: 0 10px !important;
+    --td-button-height: 40px; /* 增大触控区域 */
 }
 
 :deep(.t-dropdown__item) {
@@ -144,6 +158,11 @@ const goBack = () => {
 
 :deep(.t-dropdown__item:hover) {
     background-color: #f5f5f5;
+}
+
+:deep(.t-dropdown__menu) {
+    max-width: 200px !important;
+    min-width: 120px !important;
 }
 
 :deep(.t-avatar) {
