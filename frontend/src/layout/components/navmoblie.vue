@@ -50,7 +50,7 @@ const menuOptions = [
 
 
 // 状态管理
-const isMobile = ref(false);
+
 const route = useRoute();
 const router = useRouter();
 // 路由层级判断
@@ -64,6 +64,7 @@ const currentRoute = computed(() => {
 });
 
 // 屏幕宽度检测
+const isMobile = ref(false);
 const checkScreenWidth = () => {
     isMobile.value = window.innerWidth < 768;
 };

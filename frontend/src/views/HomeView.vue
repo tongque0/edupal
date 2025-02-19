@@ -3,7 +3,7 @@
         <div class="home">
             <section class="hero-section">
                 <h1 class="title">鞍山市高新区实验学校 - AI驱动的智能学习平台</h1>
-                <div class="feature-list">
+                <div class="feature-list" v-if="!isMobile">
                     <p class="feature-item">
                         <t-icon name="root-list" class="feature-icon" />
                         智能出题：根据你的学习进度定制题目
@@ -14,7 +14,7 @@
                     </p>
                 </div>
             </section>
-            
+
             <section class="quick-start-section">
                 <h2 class="section-title">快速开始</h2>
                 <div class="form-grid">
@@ -56,7 +56,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref ,onMounted} from 'vue'
 import Layout from '@/layout/layout.vue'
 import { MessagePlugin } from 'tdesign-vue-next';
 import { useRouter } from 'vue-router'
@@ -125,6 +125,15 @@ const handleStart = async () => {
         MessagePlugin.error('生成题目失败，请稍后重试')
     }
 }
+
+const isMobile = ref(false);
+const checkScreenWidth = () => {
+    isMobile.value = window.innerWidth < 768;
+};
+onMounted(() => {
+    checkScreenWidth();
+    window.addEventListener('resize', checkScreenWidth);
+});
 </script>
 <style scoped>
 .home {
@@ -269,20 +278,95 @@ const handleStart = async () => {
 }
 
 @media (max-width: 768px) {
-    .form-grid {
-        grid-template-columns: 1fr;
-    }
+  .home {
+    padding: 0 16px; /* 增加左右边距 */
+    width: 85%;
+    box-sizing: border-box; /* 防止溢出 */
+  }
 
-    .types-grid {
-        grid-template-columns: 1fr;
-    }
+  .hero-section {
+    margin: 0.5rem -16px; /* 扩展背景到屏幕边缘 */
+    width: calc(100% + 32px);
+    padding: 1.5rem 16px;
+    border-radius: 0; /* 移除圆角更符合移动端风格 */
+  }
 
-    .action-row {
+  .quick-start-section {
+    padding: 1.5rem;
+    margin: 1rem -16px; /* 扩展内容区域 */
+    width: calc(100% + 32px);
+    border-radius: 0;
+    box-shadow: none; /* 移除阴影保持简洁 */
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+  }
+
+  .form-grid {
+    gap: 12px; /* 增加表单项间距 */
+  }
+
+  .types-grid {
+    gap: 8px;
+  }
+
+  .type-card {
+    padding: 12px 16px;
+    border-radius: 8px; /* 调整圆角大小 */
+  }
+
+  .action-row {
+    gap: 12px;
+  }
+  .form-grid {
+        display: flex;
         flex-direction: column;
+        gap: 12px;
     }
+  /* 优化输入元素尺寸 */
+  .t-input, .t-select, .t-button {
+    font-size: 16px !important; /* 增大字体 */
+    height: 48px !important; /* 增大点击区域 */
+  }
 
-    .action-row>* {
-        width: 100%;
-    }
+  .t-checkbox {
+    font-size: 15px;
+  }
+
+  /* 调整标题尺寸 */
+  .title {
+    font-size: 1.25rem;
+    line-height: 1.4;
+    padding: 0 10px;
+  }
+
+  .section-title {
+    font-size: 1.3rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .subsection-title {
+    font-size: 1.1rem;
+  }
+
+  /* 优化计数器输入框 */
+  .t-input-number {
+    width: 100px;
+  }
+
+  .t-input-number .t-input {
+    height: 40px !important;
+  }
+}
+
+/* 全局移动端优化 */
+@media (max-width: 768px) {
+  .t-select__wrap, .t-input__wrap {
+    width: 100% !important; /* 强制表单元素占满宽度 */
+  }
+
+  .t-button {
+    width: 100%; /* 按钮占满宽度 */
+    justify-content: center;
+  }
 }
 </style>
