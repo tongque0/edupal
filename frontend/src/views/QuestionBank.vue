@@ -333,5 +333,90 @@ const createQuestionBank = () => {
         flex-direction: row;
         align-items: center;
     }
+
+}
+@media (max-width: 768px) {
+  .main-content {
+    width: 85%;
+    padding: 16px;
+  }
+  /* 分类标签优化 */
+  .mobile-categories {
+    margin: 0 -16px 1rem;
+    padding: 0 16px;
+  }
+
+  .categories-scroll {
+    padding-bottom: 8px; /* 增加滚动空间 */
+  }
+
+  .category-tag {
+    font-size: 15px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    transition: all 0.2s;
+  }
+
+  /* 内容卡片优化 */
+  .content-list {
+    gap: 12px;
+  }
+
+  .content-card {
+    margin: 0 -16px;
+    width: calc(100% + 32px);
+    border-radius: 0;
+    box-shadow: none;
+    border-bottom: 1px solid #eee;
+  }
+
+  .content-card:first-child {
+    border-top: 1px solid #eee;
+  }
+
+  .content-title {
+    font-size: 17px;
+    line-height: 1.4;
+  }
+
+  .content-description {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #444;
+  }
+
+  /* 元数据优化 */
+  .content-meta {
+    gap: 8px 12px;
+    font-size: 13px;
+  }
+
+  .content-meta > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  /* 标签样式优化 */
+  .t-badge {
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+
+  /* 全局触摸优化 */
+  .t-icon {
+    font-size: 16px !important;
+  }
+
+  button, [role="button"] {
+    touch-action: manipulation; /* 优化移动端触摸响应 */
+  }
+}
+
+/* 横屏适配 */
+@media (max-width: 768px) and (orientation: landscape) {
+  .view-mode-toggle .t-button {
+    flex: 1 1 30%;
+  }
 }
 </style>
