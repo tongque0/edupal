@@ -19,7 +19,7 @@
                 @click="goToUserProfile">
                 <t-avatar
                     size="small"
-                    image="https://p26-passport.byteacctimg.com/img/user-avatar/424e10bd281f7bd137cd259593f07f26~140x140.awebp"
+                    :image="avatarUrl"
                     :hide-on-load-failed="false" />
             </t-button>
             <t-button v-else
@@ -99,11 +99,6 @@ const goToUserProfile = () => {
 
 const goBack = () => {
     router.back();
-};
-
-// 添加激活状态判断
-const isActive = (path) => {
-    return route.path === path || route.matched.some(m => m.path === path);
 };
 </script>
 
